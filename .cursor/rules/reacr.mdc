@@ -1,0 +1,158 @@
+---
+alwaysApply: true
+---
+
+# ==============================
+
+# React Project Development Rules
+
+# ==============================
+
+# 목적:
+
+# 이 규칙들은 React 프로젝트의 일관성, 생산성, 유지보수성을 높이기 위해 사용됩니다.
+
+project_type: "react"
+
+rules:
+
+- name: "프로젝트 구조"
+  description: |
+  React Router를 기준으로 한 폴더 구조를 유지해야 합니다.
+  patterns:
+
+  - "src/"
+  - "src/assets" # 정적 파일
+  - "src/components" # UI 컴포넌트
+  - "src/hooks" # 커스텀 훅
+  - "src/lib" # 유틸리티
+  - "src/pages" # 페이지 단위 컴포넌트
+  - "src/routes" # 라우터 설정
+  - "src/services" # API 로직
+  - "src/store" # 전역 상태 관리
+  - "src/styles" # 전역 스타일, 테마
+  - "src/types" # 공용 타입 정의
+
+- name: "파일명 규칙"
+  description: |
+  파일명은 역할에 따라 정해진 네이밍 컨벤션을 따라야 합니다.
+  examples:
+
+  - components: PascalCase (예: LessonCard.tsx)
+  - pages: \*Page.tsx (예: LessonPage.tsx)
+  - hooks: use\*.ts (예: useAuth.ts)
+  - api: \*.service.ts (예: lesson.service.ts)
+  - types: \*.types.ts
+
+- name: "코드 네이밍 규칙"
+  description: |
+  변수명, 함수명, 컴포넌트명 모두 일관된 네이밍 규칙을 적용합니다.
+  rules:
+
+  - 컴포넌트는 PascalCase
+  - 변수/함수는 camelCase
+  - 불린 값은 is*, has* 접두사 사용
+  - 이벤트 핸들러는 handle\* 접두사 사용
+  - 배열명은 복수형 사용
+
+- name: "Import 순서"
+  description: |
+  import 순서는 다음과 같이 유지합니다:
+
+  1. React 관련
+  2. 외부 라이브러리
+  3. 내부 절대경로 (@/)
+  4. 상대 경로
+     enforce_order: true
+
+- name: "컴포넌트 구조"
+  description: |
+  컴포넌트는 다음 순서를 따라야 합니다:
+
+  1. import 구문
+  2. 타입/인터페이스 정의
+  3. 컴포넌트 선언
+  4. 훅 사용
+  5. 내부 함수 선언
+  6. JSX 반환
+
+- name: "상태 관리"
+  description: |
+  서버 상태는 React Query(TanStack Query),
+  클라이언트 전역 상태는 Redux Toolkit을 원칙으로 사용합니다.
+  enforce:
+
+  - React Query queryKey는 ['entity', id] 형식 유지
+  - Redux slice는 기능 단위로 분리
+
+- name: "API 통신"
+  description: |
+  모든 API 통신은 Axios 인스턴스를 사용합니다.
+  enforce:
+
+  - axios.create() 사용
+  - baseURL, timeout 공통 설정
+  - 요청 시 인증 토큰 자동 추가 (interceptor)
+  - 응답 에러 공통 처리
+
+- name: "보안 규칙"
+  description: |
+  민감한 데이터는 클라이언트에 직접 노출되지 않도록 합니다.
+  enforce:
+
+  - 환경 변수는 .env에 저장
+  - 브라우저 노출 시 REACT*APP* 접두사 사용
+  - dangerouslySetInnerHTML 사용 금지
+
+- name: "로깅 및 에러 처리"
+  description: |
+  Sentry 또는 LogRocket으로 모니터링하며,
+  React Error Boundary를 사용하여 렌더링 에러를 방지합니다.
+  enforce:
+
+  - API 에러는 useQuery의 isError를 통해 처리
+  - 사용자 피드백은 Toast 메시지로 제공
+
+- name: "성능 최적화"
+  description: |
+  렌더링, 이미지, 번들 최적화를 적극 수행합니다.
+  enforce:
+
+  - 이미지: lazy load, WebP, <picture> 사용
+  - 코드 분할: React.lazy + Suspense
+  - memo, useMemo, useCallback 사용
+  - 번들 분석 도구(webpack-bundle-analyzer) 사용
+
+- name: "테스트"
+  description: |
+  모든 테스트는 Jest + React Testing Library로 작성합니다.
+  enforce:
+
+  - 파일명: _.test.tsx 또는 _.spec.tsx
+  - 테스트 구조: Arrange - Act - Assert
+  - E2E 테스트: Cypress 또는 Playwright
+
+- name: "문서화"
+  description: |
+  Storybook으로 UI 문서화, JSDoc 주석 작성.
+  enforce:
+
+  - props에는 한글 설명 추가
+  - 복잡한 로직은 커스텀 훅에 주석 작성
+
+- name: "스타일링"
+  description: |
+  Material UI 및 theme 기반 스타일링을 권장합니다.
+  enforce:
+
+  - 색상, 폰트, 간격 등은 theme 파일에서 관리
+  - Prettier + ESLint + Husky + lint-staged 설정 필수
+
+- name: "특별 규칙"
+  description: |
+  한글 UI, 영문 코드 네이밍, 접근성 준수.
+  enforce:
+  - 모든 UI 텍스트는 한글로 작성
+  - 시맨틱 태그 (<nav>, <main> 등) 사용
+  - <img>에 alt 속성 필수
+  - 키보드 네비게이션 고려
