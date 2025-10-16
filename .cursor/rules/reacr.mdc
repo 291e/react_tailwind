@@ -156,3 +156,4 @@ rules:
   - 시맨틱 태그 (<nav>, <main> 등) 사용
   - <img>에 alt 속성 필수
   - 키보드 네비게이션 고려
+  - 모든 응답은 use context7 사용
